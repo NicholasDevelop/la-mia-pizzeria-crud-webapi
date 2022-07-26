@@ -2,6 +2,7 @@
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Controllers.Api
 {
@@ -10,12 +11,12 @@ namespace la_mia_pizzeria_static.Controllers.Api
     public class PizzasController : ControllerBase
     {
         [HttpGet]
+        //[Route("Get")]
         public IActionResult Get()
         {
             using(PizzeriaContext context = new PizzeriaContext())
             {
                 List<Pizza> pizzaList = context.Pizzas.ToList();
-                //IQueryable<Pizza> pizzaList = (IQueryable<Pizza>)ctx.Pizzas.ToList<Pizza>();
                 return Ok(pizzaList);
             }
         }
