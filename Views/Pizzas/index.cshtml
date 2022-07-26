@@ -34,8 +34,8 @@ using(PizzeriaContext db = new PizzeriaContext())
         <tr>
             <th class="text-center">Pizza</th>
             <th class="text-center">Descrizione</th>
-            <th class="text-center">Categoria</th>
             <th class="text-center">Ingredienti</th>
+            <th class="text-center">Categoria</th>
             <th class="text-center">Foto</th>
             <th class="text-center">Prezzo</th>
             <th class="text-center">Visualizza</th>
@@ -49,14 +49,6 @@ using(PizzeriaContext db = new PizzeriaContext())
             <tr class="list-table">
                 <td class="name-table p-2">@pizza.Name</td>
                 <td class="description-table p-2">@pizza.Description</td>
-                <td class="category-table p-2">
-                    @if(pizza.Category != null){
-                         <p>@pizza.Category.Name</p>
-                    }
-                    else{
-                         <p>Categoria assente</p>     
-                    }
-                </td>
                 <td class="ingredient-table p-2">
                     @if(pizza.Ingredients != null){
                         foreach(Ingredient i in pizza.Ingredients)
@@ -68,7 +60,14 @@ using(PizzeriaContext db = new PizzeriaContext())
                          <p>Nessun ingrediente selezionato</p>     
                     }
                 </td>
-                <td class="description-table p-2">@pizza.Description</td>
+                <td class="category-table p-2">
+                    @if(pizza.Category != null){
+                         <p>@pizza.Category.Name</p>
+                    }
+                    else{
+                         <p>Categoria assente</p>     
+                    }
+                </td>
                 <td class="img-table p-2"><img class="w-100" height="150px" src="@pizza.Img"/></td>
                 <td class="price-table p-2">@pizza.Price</td>
                 <td><a href="@Url.Action("Detail", "Pizzas", new {@pizza.Id})"><button class="btn btn-sm btn-info">Visualizza Pizza</button></a></td>
@@ -84,3 +83,15 @@ using(PizzeriaContext db = new PizzeriaContext())
         }
     </tbody>
 </table>
+
+
+@*SCRIPT*@
+<script>
+
+axios.get('/Api/Pizzas').then(res => {
+    console.log(res);
+}).catch(err => {
+    console.log(err);
+})
+
+</script>
