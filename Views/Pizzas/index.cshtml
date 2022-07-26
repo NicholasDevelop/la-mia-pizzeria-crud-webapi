@@ -1,0 +1,86 @@
+﻿@using la_mia_pizzeria_static.Data
+
+@*@{
+using(PizzeriaContext db = new PizzeriaContext())
+    {
+
+        Pizza margherita = new Pizza("Margherita", "pomodoro, mozzarella, basilico", "https://rs-menus-api.roocdn.com/images/99f775f0-f4b5-41cb-a99c-332e265cbd83/image.jpeg?width=543&height=305&auto=webp&format=jpg&fit=crop", 3.50);
+        db.Add(margherita);
+        Pizza quattroFormaggi = new Pizza("Quattro formaggi", "Fiordilatte di Agerola, Toma, Provolone del Monaco DOP, Gorgonzola DOP, Basilico, Olio EVO", "https://rs-menus-api.roocdn.com/images/8fea9476-3d41-48ba-a174-8a16b0a6a2f8/image.jpeg?width=543&height=305&auto=webp&format=jpg&fit=crop", 12.50);
+        db.Add(quattroFormaggi);
+        Pizza crudoDiNorcia = new Pizza("Crudo di Norcia", "Pomodoro La Fiammante BIO, Fiordilatte di Agerola, Prosciutto Crudo di Norcia Renzini IGP, Gocce di parmigiano, Basilico, Olio EVO", "https://rs-menus-api.roocdn.com/images/05de12cd-7196-4278-a772-7df96f4cdf3b/image.jpeg?width=543&height=305&auto=webp&format=jpg&fit=crop", 12.50);
+        db.Add(crudoDiNorcia);
+        Pizza amatriciana = new Pizza("Amatriciana", "Salsa di pomodoro fresco, Guanciale, Scaglie di Pecorino, Basilico, Olio EVO", "https://rs-menus-api.roocdn.com/images/a8bc2787-3945-4e21-83ca-9c3520917bff/image.jpeg?width=543&height=305&auto=webp&format=jpg&fit=crop", 11.00);
+        db.Add(amatriciana);
+        Pizza porcinoStammiVicino = new Pizza("Porcino Stammi Vicino", "Crema di funghi porcini, Friarielli, Mandorle a lamelle, Glassa di aceto balsamico, Basilico, Olio EVO", "https://rs-menus-api.roocdn.com/images/b1e5b7b8-a70f-45ad-b085-9f96c5ccb5fa/image.jpeg?width=543&height=305&auto=webp&format=jpg&fit=crop", 11.00);
+        db.Add(porcinoStammiVicino);
+        db.SaveChanges();
+    }
+}*@
+@model List<Pizza>
+@using la_mia_pizzeria_static.Models
+
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<h1>Da Niko - Pizzeria</h1>
+<p class="mb-5">Le Migliori pizze che puoi desiderare!</p>
+
+<a href="@Url.Action("Create", "Pizzas")"><button class="btn btn-small btn-info mb-3">Crea una nuova Pizza</button></a>
+
+<h2 class="mb-3">Le nostre pizze:</h2>
+<table>
+    <thead>
+        <tr>
+            <th class="text-center">Pizza</th>
+            <th class="text-center">Descrizione</th>
+            <th class="text-center">Categoria</th>
+            <th class="text-center">Ingredienti</th>
+            <th class="text-center">Foto</th>
+            <th class="text-center">Prezzo</th>
+            <th class="text-center">Visualizza</th>
+            <th class="text-center">Modifica</th>
+            <th class="text-center">Elimina</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Pizza pizza in Model)
+        {
+            <tr class="list-table">
+                <td class="name-table p-2">@pizza.Name</td>
+                <td class="description-table p-2">@pizza.Description</td>
+                <td class="category-table p-2">
+                    @if(pizza.Category != null){
+                         <p>@pizza.Category.Name</p>
+                    }
+                    else{
+                         <p>Categoria assente</p>     
+                    }
+                </td>
+                <td class="ingredient-table p-2">
+                    @if(pizza.Ingredients != null){
+                        foreach(Ingredient i in pizza.Ingredients)
+                        {
+                            <span>@i.Name, </span>                            
+                        }
+                    }
+                    else{
+                         <p>Nessun ingrediente selezionato</p>     
+                    }
+                </td>
+                <td class="description-table p-2">@pizza.Description</td>
+                <td class="img-table p-2"><img class="w-100" height="150px" src="@pizza.Img"/></td>
+                <td class="price-table p-2">@pizza.Price</td>
+                <td><a href="@Url.Action("Detail", "Pizzas", new {@pizza.Id})"><button class="btn btn-sm btn-info">Visualizza Pizza</button></a></td>
+                <td><a href="@Url.Action("Update", "Pizzas", new {@pizza.Id})"><button class="btn btn-sm btn-warning">Modifica Pizza</button></a></td>
+                <td><form asp-controller="Pizzas" asp-action="Delete" asp-route-id="@pizza.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Elimina Pizza
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
