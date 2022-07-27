@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("api/pizzas")]
     [ApiController]
     public class PizzasController : ControllerBase
     {
@@ -31,14 +31,14 @@ namespace la_mia_pizzeria_static.Controllers.Api
         {
             using (PizzeriaContext context = new PizzeriaContext())
             {
-                Pizza p = context.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+                Pizza pizza = context.Pizzas.Where(p => p.Id == id).FirstOrDefault();
 
-                if(p == null)
+                if(pizza == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(p);
+                return Ok(pizza);
             }
         }
     }

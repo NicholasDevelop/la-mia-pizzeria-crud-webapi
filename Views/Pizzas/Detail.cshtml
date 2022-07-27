@@ -1,7 +1,10 @@
-﻿@model Pizza
+﻿@{
+    string id = (string)ViewData["id"];
+}
+@model Pizza
 @using la_mia_pizzeria_static.Models
 
-<div class="d-flex gap-3 my-4"> 
+@*<div class="d-flex gap-3 my-4"> 
     <img src="@Model.Img">  
 
     <div>
@@ -24,4 +27,40 @@
         <p>@Model.Description</p>
         <p>@Model.Price euro</p>
     </div>
-</div>
+</div>*@
+
+<script>
+
+    axios.get("/api/pizzas/@id")
+    .then(function (res) {
+    // handle success
+        const pizza = res.data;
+        let getIngredients = "";
+        if (pizza.ingredients != undefined) {
+        }
+        pizza.ingredients.forEach(i => {
+            let p = `<p>${i.name}</p>`
+            getIngredients += p;
+        })
+        const main = document.querySelector("main");
+        const container = document.createElement("div");
+        container.className = "d-flex gap-3 my-4";
+        container.innerHTML = `<img src="${pizza.Img}">  
+
+                                <div>
+                                    <h2>${pizza.name}</h2>
+                                    if (${pizza.category} != null){
+                                        <p>${pizza.category.name}</p>
+                                    }
+                                    else{
+                                        <p>N.D</p>
+                                    }
+                                    <p>Ingretienti: </p>
+                                    ${getIngredients}
+                                    <p>${pizza.description}</p>
+                                    <p>${pizza.price} euro</p>
+                                </div>`;
+        main.append(container);
+    })
+
+</script>
