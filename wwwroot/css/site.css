@@ -77,7 +77,7 @@ body {
 .card.card-has-bg:hover .card-img-overlay {
     transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
     background: #234f6d;
-    background: linear-gradient(0deg, rgba(100, 20, 20, 0.5) 0%, rgba(100, 20, 20, 1) 100%);
+    background: linear-gradient(0deg, rgba(100, 20, 20, 0) 0%, rgba(100, 20, 20, 0.7) 100%);
 }
 
 .card .card-footer {
@@ -115,5 +115,5 @@ body {
 
 .card .card-img-overlay {
     transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
-    background: linear-gradient(0deg, rgba(2, 2, 2, 0.3785889355742297) 0%, rgba(20, 20, 20, 1) 100%);
+    background: linear-gradient(0deg, rgba(2, 2, 2, 0) 0%, rgba(20, 20, 20, 0.7) 100%);
 }

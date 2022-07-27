@@ -17,7 +17,7 @@ using(PizzeriaContext db = new PizzeriaContext())
         db.SaveChanges();
     }
 }*@
-@model List<Pizza>
+@model int
 @using la_mia_pizzeria_static.Models
 
 <head>
@@ -25,20 +25,20 @@ using(PizzeriaContext db = new PizzeriaContext())
 </head>
 
 
-<h1>Da Niko - Pizzeria</h1>
-<p class="mb-5">Le Migliori pizze che puoi desiderare!</p>
+<h1 class="container">Da Niko - Pizzeria</h1>
+<p class="mb-5 container">Le Migliori pizze che puoi desiderare!</p>
 
-<a href="@Url.Action("Create", "Pizzas")"><button class="btn btn-small btn-info mb-3">Crea una nuova Pizza</button></a>
+<a href="@Url.Action("Create", "Pizzas")"><button class="btn btn-small btn-info mb-3 container">Crea una nuova Pizza</button></a>
 
-<h2 class="mb-3">Le nostre pizze:</h2>
-@if(Model.Count() == 0)
+<h2 class="mb-3 container">Le nostre pizze:</h2>
+@*@if(Model.Count() == 0)
 {
     <div class="container text-center">
         <h1>Non sono ancora state caricate delle pizze</h1>
     </div>
 }
 else
-{
+{*@
     <section class="wrapper">
         <div class="container">
 
@@ -101,36 +101,39 @@ else
   
         </div>
     </section>
-}
+@*}*@
 
 
 @*SCRIPT*@
 <script>
+const id = @Model;
 
-axios.get('/api/pizzas').then(res => {
-    console.log(res.data);
+axios.get(`/api/pizzas/${id}`).then((res) => {
+    //console.log(res.data);
+    console.log('risultato ok', res);
+    const pizza = res.data;
     const container = document.querySelector(".row");
-    res.data.forEach(pizza => {
+    //forEach(pizza => {
         const card = document.createElement("div");
         card.className = "col-sm-12 col-md-6 col-lg-4 mb-4"
         card.innerHTML = 
-        `<a href="/pizze/details/${pizza.id}"> 
+        `<a href="/pizzas/detail/${pizza.id}"> 
             <div class="card text-white card-has-bg click-col" style="background-image: url(${pizza.img}); ">
                 <div class="card-img-overlay d-flex flex-column justify-content-between">
                     <div class="card-body">
                         <h4 class="card-title mt-0 ">${pizza.name}</h4>
                     </div>
                     <div class="card-footer align-self-end">
-                        <a class="btn btn-primary" href="/pizze/editform/${pizza.id}">Edit</a>
-                        <a class="btn btn-danger" href="/pizze/delete/${pizza.id}">Delete</a>
+                        <a class="btn btn-primary" href="/pizzas/update/${pizza.id}">Edit</a>
+                        <a class="btn btn-danger" href="/pizzas/delete/${pizza.id}">Delete</a>
                     </div>
                 </div>
             </div>
         </a>`;
         container.append(card);
-    })
+    //})
 }).catch(err => {
-    console.log(err);
+    document.querySelector('.row').innerHTML += "<div class='alert alert-danger><h2>${Not fount}</h2></div>";
 })
 
 </script>
