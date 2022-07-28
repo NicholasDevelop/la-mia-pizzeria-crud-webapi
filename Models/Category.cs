@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace la_mia_pizzeria_static.Models
 {
@@ -13,6 +14,7 @@ namespace la_mia_pizzeria_static.Models
         [StringLength(40, ErrorMessage = "Il nome non può avere più di 40 caratteri")]
         public string Name { get; set; }
 
+        [JsonIgnore]
         public List<Pizza> Pizzas { get; set; }
 
 

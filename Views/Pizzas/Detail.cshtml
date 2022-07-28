@@ -1,10 +1,7 @@
-﻿@{
-    string id = (string)ViewData["id"];
-}
-@model Pizza
-@using la_mia_pizzeria_static.Models
+﻿@model Pizza
+@*@using la_mia_pizzeria_static.Models
 
-@*<div class="d-flex gap-3 my-4"> 
+<div class="d-flex gap-3 my-4"> 
     <img src="@Model.Img">  
 
     <div>
@@ -29,38 +26,42 @@
     </div>
 </div>*@
 
-<script>
+<script type="text/javascript">
 
-    axios.get("/api/pizzas/@id")
-    .then(function (res) {
-    // handle success
-        const pizza = res.data;
-        let getIngredients = "";
-        if (pizza.ingredients != undefined) {
-        }
-        pizza.ingredients.forEach(i => {
-            let p = `<p>${i.name}</p>`
-            getIngredients += p;
-        })
-        const main = document.querySelector("main");
-        const container = document.createElement("div");
-        container.className = "d-flex gap-3 my-4";
-        container.innerHTML = `<img src="${pizza.Img}">  
+const id = @Model.Id;
 
-                                <div>
-                                    <h2>${pizza.name}</h2>
-                                    if (${pizza.category} != null){
-                                        <p>${pizza.category.name}</p>
-                                    }
-                                    else{
-                                        <p>N.D</p>
-                                    }
-                                    <p>Ingretienti: </p>
-                                    ${getIngredients}
-                                    <p>${pizza.description}</p>
-                                    <p>${pizza.price} euro</p>
-                                </div>`;
-        main.append(container);
+axios.get(`/api/Pizzas/${id}`)
+.then(function (res) {
+// handle success
+    console.log(res.data)
+    const pizza = res.data;
+    let getIngredients = "";
+    if (pizza.ingredients != undefined) {
+    }
+    pizza.ingredients.forEach(i => {
+        let p = `<span>${i.name}, </span>`
+        getIngredients += p;
     })
+    let getCategory = "";
+    if (pizza.category.name != null){
+        getCategory = `<span>${pizza.category.name}</span>`
+    }
+    else{
+        getCategory = `<span>N.D</span>`
+    }
+    const main = document.querySelector("main");
+    const container = document.createElement("div");
+    container.className = "d-flex gap-3 my-4";
+    container.innerHTML = `<img src="${pizza.Img}">  
+
+                            <div>
+                                <h2>${pizza.name}</h2>
+                                <p>Categoria: ${getCategory}</p>
+                                <p>Ingretienti: ${getIngredients}</p>                                    
+                                <p>Descrizione: ${pizza.description}</p>
+                                <p>Prezzo: ${pizza.price} euro</p>
+                            </div>`;
+    main.append(container);
+})
 
 </script>

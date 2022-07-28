@@ -31,7 +31,7 @@ namespace la_mia_pizzeria_static.Controllers.Api
         {
             using (PizzeriaContext context = new PizzeriaContext())
             {
-                Pizza pizza = context.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+                Pizza pizza = context.Pizzas.Where(p => p.Id == id).Include("Ingredients").Include("Category").FirstOrDefault();
 
                 if(pizza == null)
                 {

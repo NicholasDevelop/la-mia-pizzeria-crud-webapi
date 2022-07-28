@@ -110,10 +110,13 @@ else
         
         const input = document.getElementById('search');
         input.addEventListener("keyup", search);
+
         function search() {
             var string = input.value;
             getPizza(string);
         }
+
+        getPizza("");
     
         function getPizza(string) {
             axios.get("api/pizzas", {
