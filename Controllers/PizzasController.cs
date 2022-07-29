@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
+using la_mia_pizzeria_static.Models.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,31 +11,50 @@ namespace la_mia_pizzeria_static.Controllers
     [Authorize]
     public class PizzasController : Controller
     {
+        private DbPizzaRepository pizzaRepository;
+        public PizzasController()
+        {
+            this.pizzaRepository = new DbPizzaRepository();
+        }
+
+
         [HttpGet]
         public IActionResult Index()
         {
             using (PizzeriaContext context = new PizzeriaContext())
             {
-                IQueryable<Pizza> pizzaList = context.Pizzas.Include(p => p.Category).Include(i => i.Ingredients);
-                //List<Pizza> pizzaList = (List<Pizza>)new PizzeriaContext().Pizzas.Include(p => p.Category);
-                return View("index", pizzaList.ToList());
+                //IQueryable<Pizza> pizzaList = context.Pizzas.Include(p => p.Category).Include(i => i.Ingredients);
+                //return View("index", pizzaList.ToList());
+
+                List<Pizza> pizzas = pizzaRepository.GetList();
+                return View(pizzas);
             }
         }
 
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            using(PizzeriaContext context = new PizzeriaContext())
+            //using(PizzeriaContext context = new PizzeriaContext())
+            //{
+            //    Pizza current = context.Pizzas.Where(pizza => pizza.Id == id).Include("Category").Include(i => i.Ingredients).FirstOrDefault();
+            //    if(current == null)
+            //    {
+            //        return NotFound($"La pizza con id {id} non è stata trovata!");
+            //    }
+            //    else
+            //    {
+            //        return View("Detail", current);
+            //    }
+            //}
+
+            Pizza pizzaFound = pizzaRepository.GetById(id);
+            if (pizzaFound == null)
             {
-                Pizza current = context.Pizzas.Where(pizza => pizza.Id == id).Include("Category").Include(i => i.Ingredients).FirstOrDefault();
-                if(current == null)
-                {
-                    return NotFound($"Il post con id {id} non è stato trovato!");
-                }
-                else
-                {
-                    return View("Detail", current);
-                }
+                return NotFound($"La pizza con id {id} non è stata trovata!");
+            }
+            else
+            {
+                return View("Detail", pizzaFound);
             }
         }
 
